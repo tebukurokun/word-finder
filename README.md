@@ -1,5 +1,7 @@
 # word-finder
 
+![530540647816626308](https://github.com/user-attachments/assets/fb4ea319-e3fd-4adc-b4de-3c0fc4dd7881)
+
 ## setup
 
 ``` bash
@@ -7,6 +9,7 @@ poetry install
 
 python main.py
 ```
+
 
 ## References
 
