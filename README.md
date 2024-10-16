@@ -5,8 +5,22 @@
 ## setup
 
 ``` bash
-poetry install
+brew install mecab mecab-ipadic
 
+git clone --depth 1 https://github.com/neologd/mecab-ipadic-neologd.git
+cd mecab-ipadic-neologd/
+./bin/install-mecab-ipadic-neologd -n
+
+brew install poetry
+
+```
+
+``` bash
+poetry install
+```
+
+## run
+``` bash
 python main.py
 ```
 
