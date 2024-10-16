@@ -3,53 +3,53 @@ from typing import List
 import MeCab
 import unidic
 
+# ひらがなリスト
+hiragana_list = list(
+    "あいうえお"
+    "かきくけこがぎぐげご"
+    "さしすせそざじずぜぞ"
+    "たちつてとだぢづでど"
+    "なにぬねの"
+    "はひふへほばびぶべぼぱぴぷぺぽ"
+    "まみむめも"
+    "やゆよ"
+    "らりるれろ"
+    "わをん"
+    "っ"
+    "アイウエオ"
+    "カキクケコガギグゲゴ"
+    "サシスセソザジズゼゾ"
+    "タチツテトダヂヅデド"
+    "ナニヌネノ"
+    "ハヒフヘホバビブベボパピプペポ"
+    "マミムメモ"
+    "ヤユヨ"
+    "ラリルレロ"
+    "ワヲン"
+    "ッ"
+    "ー"
+)
+
 
 def main():
     """
     main
     :return:
     """
-    # ひらがなリスト
-    hiragana_list = list(
-        "あいうえお"
-        "かきくけこがぎぐげご"
-        "さしすせそざじずぜぞ"
-        "たちつてとだぢづでど"
-        "なにぬねの"
-        "はひふへほばびぶべぼぱぴぷぺぽ"
-        "まみむめも"
-        "やゆよ"
-        "らりるれろ"
-        "わをん"
-        "っ"
-        "アイウエオ"
-        "カキクケコガギグゲゴ"
-        "サシスセソザジズゼゾ"
-        "タチツテトダヂヅデド"
-        "ナニヌネノ"
-        "ハヒフヘホバビブベボパピプペポ"
-        "マミムメモ"
-        "ヤユヨ"
-        "ラリルレロ"
-        "ワヲン"
-        "ッ"
-        "ー"
-    )
-    combinations = []
 
     # 1文字目、3文字目、4文字目は同じ、2文字目が異なる組み合わせを作成
-    for char in hiragana_list:
-        for second_char in hiragana_list:
-            # 2文字目が異なる場合のみ追加
-            if char != second_char:
-                word = char + second_char + char + char
-                combinations.append(word)
+    combinations = [
+        f"{char}{second_char}{char}{char}"
+        for char in hiragana_list
+        for second_char in hiragana_list
+        if char != second_char
+    ]
 
     print({"combinations": combinations})
 
     valid_words1 = find_valid_words(f"-d {unidic.DICDIR}", combinations)
 
-    # 辞書のpathは環境ごとに変えてね
+    # 辞書のpathは環境に応じて変えてね
     valid_words2 = find_valid_words(
         f"-d /opt/homebrew/lib/mecab/dic/mecab-ipadic-neologd", combinations
     )
