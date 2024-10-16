@@ -41,7 +41,7 @@ def main():
         for second_char in hiragana_list:
             # 2文字目が異なる場合のみ追加
             if char != second_char:
-                word = char + char + second_char + char
+                word = char + second_char + char + char
                 combinations.append(word)
 
     print({"combinations": combinations})
