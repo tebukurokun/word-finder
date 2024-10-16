@@ -65,7 +65,7 @@ def main():
 
 def find_valid_words(dict_dir: str, words: List[str]) -> List[str]:
     """
-    単語リストから存在する単語を抽出
+    単語リストから存在する単語を抽出.
     :param dict_dir: mecabで使う辞書ファイル
     :param words: チェックしたい単語リスト
     :return: 存在した単語リスト
@@ -74,31 +74,38 @@ def find_valid_words(dict_dir: str, words: List[str]) -> List[str]:
     mecab = MeCab.Tagger(dict_dir)
 
     # 存在する単語を格納するリスト
-    valid_words = []
-
-    for word in words:
-
-        # MeCabで解析して、解析結果が単語と一致するかチェック
-        node = mecab.parseToNode(word)
-
-        # 最初のノードが入力単語と一致するか確認
-
-        while node:
-            features = node.feature.split(",")
-
-            if all(f == "*" for f in features[3:]):
-                # 無効なノード (名詞,一般,*,*,*,*,*)のような形式 をスキップ
-                node = node.next
-                continue
-
-            if node.surface == word and (
-                "名詞" in node.feature or "副詞" in node.feature
-            ):  # 名詞 or 副詞が含まれているかをチェック
-                print(node.feature)
-                valid_words.append(word)  # 辞書に存在する単語として追加
-            node = node.next  # 次のノードに移動
+    valid_words = [word for word in words if is_valid_word(mecab, word)]
 
     return valid_words
+
+
+def is_valid_word(mecab: MeCab.Tagger, word: str) -> bool:
+    """
+    辞書に存在する単語か判定.
+    :param mecab: MeCab.Tagger
+    :param word: 単語.
+    :return:
+    """
+    # MeCabで解析して、解析結果が単語と一致するかチェック
+    node = mecab.parseToNode(word)
+
+    # 最初のノードが入力単語と一致するか確認
+    while node:
+        features = node.feature.split(",")
+
+        if all(f == "*" for f in features[3:]):
+            # 無効なノード (名詞,一般,*,*,*,*,*)のような形式 をスキップ
+            node = node.next
+            continue
+
+        if node.surface == word and (
+            "名詞" in node.feature or "副詞" in node.feature
+        ):  # 名詞 or 副詞が含まれているかをチェック
+            print(node.feature)
+            return True  # 辞書に存在する単語
+        node = node.next  # 次のノードに移動
+
+    return False
 
 
 if __name__ == "__main__":
