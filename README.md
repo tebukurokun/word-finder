@@ -30,3 +30,4 @@ python main.py
 - https://clrd.ninjal.ac.jp/unidic/
 - https://github.com/neologd/mecab-ipadic-neologd/tree/master
 - https://python-poetry.org/
+- https://github.com/megagonlabs/ginza
