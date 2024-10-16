@@ -30,6 +30,13 @@ hiragana_list = list(
     "ー"
 )
 
+# 辞書のpathは環境に応じて変えてね
+dict_dirs = [
+    f"-d {unidic.DICDIR}",
+    f"-d /opt/homebrew/lib/mecab/dic/ipadic",
+    f"-d /opt/homebrew/lib/mecab/dic/mecab-ipadic-neologd",
+]
+
 
 def main():
     """
@@ -47,18 +54,12 @@ def main():
 
     print({"combinations": combinations})
 
-    valid_words1 = find_valid_words(f"-d {unidic.DICDIR}", combinations)
+    valid_words = set()
 
-    # 辞書のpathは環境に応じて変えてね
-    valid_words2 = find_valid_words(
-        f"-d /opt/homebrew/lib/mecab/dic/mecab-ipadic-neologd", combinations
-    )
+    # 各辞書ファイルに対して find_valid_words を実行
+    for dict_dir in dict_dirs:
+        valid_words.update(find_valid_words(dict_dir, combinations))
 
-    valid_words3 = find_valid_words(
-        f"-d /opt/homebrew/lib/mecab/dic/ipadic", combinations
-    )
-
-    valid_words = set(valid_words1 + valid_words2 + valid_words3)
     # 辞書に存在する4文字の単語を表示
     print({"valid_words": valid_words})
 
@@ -86,6 +87,7 @@ def is_valid_word(mecab: MeCab.Tagger, word: str) -> bool:
     :param word: 単語.
     :return:
     """
+
     # MeCabで解析して、解析結果が単語と一致するかチェック
     node = mecab.parseToNode(word)
 
@@ -94,7 +96,7 @@ def is_valid_word(mecab: MeCab.Tagger, word: str) -> bool:
         features = node.feature.split(",")
 
         if all(f == "*" for f in features[3:]):
-            # 無効なノード (名詞,一般,*,*,*,*,*)のような形式 をスキップ
+            # 無効なノード (名詞,一般,*,*,*,*,* のような形式) をスキップ
             node = node.next
             continue
 
