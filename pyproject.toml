@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "word-finder"
+version = "0.1.0"
+description = ""
+authors = ["tebukuro <58774766+tebukurokun@users.noreply.github.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.13"
+unidic-lite = "^1.0.8"
+mecab-python3 = "^1.0.9"
+unidic = "^1.1.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
